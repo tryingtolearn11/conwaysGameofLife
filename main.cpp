@@ -26,8 +26,8 @@ void generate(vector<vector<bool> >&g,vector<vector<bool> >&newworld)
             int x = g.size(); //I rows
             int y = g[i].size(); //J columns
             //wrap the edges with formula (x+n)%n  where n = NumOfRows or NumOfCol
-                          // Top left                      // top middle          // top right                    // left cell              // right
-            // count neighbor cells
+                          // Top left                      // top middle          // top right                    // left cell              // right    // etc
+            // count all neighbor cells
             int count = g[(((i+1)+x)%x)][(((j-1)+y)%y)] + g[(((i+1)+x)%x)][j] + g[(((i+1)+x)%x)][(((j+1)+y)%y)] + g[i][(((j-1)+y)%y)] +  g[i][(((j+1)+y)%y)] + g[(((i-1)+x)%x)][(((j-1)+y)%y)] + g[(((i-1)+x)%x)][j] + g[(((i-1)+x)%x)][(((j+1)+y)%y)];
             // conditional statement: apply count rules 
             newworld[i][j] = g[i][j] ? (count == 2 || count == 3) : (count == 3);
