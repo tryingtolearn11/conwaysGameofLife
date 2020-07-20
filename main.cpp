@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
-
-using gof_t = std::vector<std::vector<bool>>;
-gof_t world = {
+using std::vector;
+using std::cout;
+using std::swap;
+vector<vector<bool> > world = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -13,52 +14,60 @@ gof_t world = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-    };
-void generate(gof_t& g, gof_t& newworld)
+};
+
+void generate(vector<vector<bool> >&g,vector<vector<bool> >&newworld)
 {
-    for(size_t i = 0, x = g.size(); i < x; i++)
-    {
-        for(size_t j = 0, y = g[i].size(); j < y; j++)
-        {
-            size_t i_prev = (i + x - 1) % x;
-            size_t i_next = (i + 1) % x;
-            size_t j_prev = (j + y - 1) % y;
-            size_t j_next = (j + 1) % y;
+    
+    newworld = g;
+    for(size_t i = 0; i < g.size();i++) {
+        for(size_t j = 0; j < g[i].size();j++) {
 
-            int count = g[i_prev][j_prev] + g[i_prev][j] + g[i_prev][j_next]
-                      + g[i     ][j_prev]                + g[i     ][j_next]
-                      + g[i_next][j_prev] + g[i_next][j] + g[i_next][j_next];
-
-
-
+            int x = g.size(); //I rows
+            int y = g[i].size(); //J columns
+            //wrap the edges with formula (x+n)%n  where n = NumOfRows or NumOfCol
+                          // Top left                      // top middle          // top right                    // left cell              // right
+            // count neighbor cells
+            int count = g[(((i+1)+x)%x)][(((j-1)+y)%y)] + g[(((i+1)+x)%x)][j] + g[(((i+1)+x)%x)][(((j+1)+y)%y)] + g[i][(((j-1)+y)%y)] +  g[i][(((j+1)+y)%y)] + g[(((i-1)+x)%x)][(((j-1)+y)%y)] + g[(((i-1)+x)%x)][j] + g[(((i-1)+x)%x)][(((j+1)+y)%y)];
+            // conditional statement: apply count rules 
             newworld[i][j] = g[i][j] ? (count == 2 || count == 3) : (count == 3);
         }
     }
-    std::swap(g, newworld);
+    std::swap(g,newworld);
 }
 
-void display(gof_t const& a)
+
+
+void display(vector<vector<bool> >&a)
 {
-    for(size_t row = 0; row < a.size(); row++)
-    {
-        for(size_t column = 0; column < a[row].size(); column++)
-        {
-            std::cout << ".*"[a[row][column]];
+    for(size_t row = 0; row <a.size(); row++) {
+        for(size_t column = 0; column <a[row].size(); column++){
+            if (a[row][column]) {
+                cout << 'O';
+            }
+             else {
+                cout << '.';
+             }
         }
-        std::cout << '\n';
+        cout << '\n';
     }          
 }        
 
 int main()
 {
-
-    gof_t newworld(world);
-    
-    for (int i = 0; i < 20; ++i)
+    vector<vector<bool> > newworld;
+    int x;
+    std::cout << "Welcome To Conway's Game of Life" << '\n';
+    std::cout << "Enter the number of generations to run :  ";
+    std::cin >> x;
+     for (int i = 0; i < x+1; ++i)
     {
         display(world);
+        std::cout << "Generation : " << i << '\n';
+        std::cout << "--------------------------------------------" << '\n';
         std::cout << '\n';
         generate(world, newworld);
     }
+  
     return 0;
 }
