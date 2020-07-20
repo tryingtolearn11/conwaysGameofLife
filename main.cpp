@@ -43,7 +43,7 @@ void display(gof_t const& a)
     {
         for(size_t column = 0; column < a[row].size(); column++)
         {
-            std::cout << ".O"[a[row][column]];
+            std::cout << ".*"[a[row][column]];
         }
         std::cout << '\n';
     }          
