@@ -44,7 +44,5 @@ Generation : 1
 Generation : 2
 --------------------------------------------
 
- 
-
 ```
 Simply run the program and enter the number of generations you want.
